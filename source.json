@@ -1,0 +1,19 @@
+{
+    "name": "nyako's VPM Listing",
+    "id": "cat.nyako.vpm",
+    "url": "https://vpm.nyako.cat/index.json",
+    "author": {
+        "name": "nyako",
+        "url": "https://nyako.cat"
+    },
+    "description": "nyako's VRChat packages",
+    "infoLink": {
+        "url": "https://github.com/nyakowint",
+        "text": "View on GitHub"
+    },
+    "bannerUrl": "banner.png",
+    "githubRepos": [
+        "nyakowint/bs-export-helper-thing"
+    ],
+    "packages": []
+}
