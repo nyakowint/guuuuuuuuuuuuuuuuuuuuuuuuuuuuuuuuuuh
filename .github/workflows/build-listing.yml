@@ -9,6 +9,8 @@ on:
   push:
     branches: main
     paths: source.json
+  repository_dispatch:
+    types: [package-release]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
