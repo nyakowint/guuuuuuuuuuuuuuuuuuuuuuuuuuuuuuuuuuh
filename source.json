@@ -13,7 +13,8 @@
     },
     "bannerUrl": "banner.png",
     "githubRepos": [
-        "nyakowint/some-export-helper-thing"
+        "nyakowint/some-export-helper-thing",
+		"nyakowint/imscaler"
     ],
     "packages": []
 }
