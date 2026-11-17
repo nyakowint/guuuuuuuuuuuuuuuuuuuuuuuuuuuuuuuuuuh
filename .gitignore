@@ -65,4 +65,3 @@ Assets/PackageMakerWindowData.asset*
 node_modules/
 dist/
 .astro/
-listing/

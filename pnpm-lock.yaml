@@ -169,6 +169,9 @@ importers:
       astro:
         specifier: 7.4.12
         version: 7.4.12(@types/node@26.6.6)(yaml@2.9.1)
+      fflate:
+        specifier: 0.8.3
+        version: 0.8.3
       semver:
         specifier: 7.8.6
         version: 7.8.6
@@ -902,6 +905,9 @@ packages:
     peerDependenciesMeta:
       picomatch:
         optional: true
+
+  fflate@0.8.3:
+    resolution: {integrity: sha512-tbZNuJrLwGUp3zshBtdy4W+ORxZuIh8a5ilyIEQDC5rY1f3U20JMry0Ll3WBzU58EZKsEuJFXhb5gwv8CsPvgA==}
 
   flattie@1.1.1:
     resolution: {integrity: sha512-9UbaD6XdAL97+k/n+N7JwX46K/M6Zc6KcFYskrYL8wbBV/Uyk0CTAMY0VT+qiK5PM7AIc9aTWYtq65U7T+aCNQ==}
@@ -2128,6 +2134,8 @@ snapshots:
   fdir@6.5.0(picomatch@4.0.7):
     optionalDependencies:
       picomatch: 4.0.7
+
+  fflate@0.8.3: {}
 
   flattie@1.1.1: {}
 

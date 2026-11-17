@@ -1,9 +1,5 @@
 name: Build Repo Listing
 
-env:
-  listPublishDirectory: listing
-  pathToCi: ci
-
 on:
   workflow_dispatch:
   push:
@@ -23,14 +19,14 @@ permissions:
   contents: read
   pages: write
   id-token: write
-  
+
 # Allow one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  
+
   # Build the VPM Listing Website and deploy to GitHub Pages
   build-listing:
     name: build-listing
@@ -39,37 +35,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      
-      # Checkout Local Repository
+
       - name: Checkout Local Repository
         uses: actions/checkout@v4
-
-      # Checkout Automation Repository without removing prior checkouts
-      - name: Checkout Automation Repository
-        uses: actions/checkout@v4
-        with:
-          repository: vrchat-community/package-list-action
-          path: ${{ env.pathToCi }}
-          clean: false
-
-      # Load cached data from previous runs
-      - name: Restore Cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ env.pathToCi }}/.nuke/temp
-            ~/.nuget/packages
-          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj') }}
-      
-      # The action always renders Website/index.html + app.js as Scriban templates; the site is built by Astro instead
-      - name: Stub Listing Templates
-        run: mkdir -p Website && touch Website/index.html Website/app.js
-
-      # Build Package Version Listing with Nuke
-      - name: Build Package Version Listing
-        run: ${{ env.pathToCi }}/build.cmd BuildMultiPackageListing --root ${{ env.pathToCi }} --list-publish-directory $GITHUB_WORKSPACE/${{ env.listPublishDirectory }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -80,23 +48,20 @@ jobs:
           node-version: 24
           cache: pnpm
 
-      # Build the website with the freshly generated listing
+      # Builds index.json from the GitHub releases in source.json along with the website
       - name: Build Website
         run: pnpm install --frozen-lockfile && pnpm build
         env:
-          LISTING_PATH: ${{ env.listPublishDirectory }}/index.json
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Prepare for GitHub Pages deployment
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # Upload the VPM Listing Website to GitHub Pages artifacts
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
-      
-      # Deploy the uploaded VPM Listing Website to GitHub Pages
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
