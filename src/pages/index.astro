@@ -1,0 +1,177 @@
+---
+import "../styles/global.css";
+import Button from "../components/Button.astro";
+import CopyField from "../components/CopyField.astro";
+import Dialog from "../components/Dialog.astro";
+import Icon from "../components/Icon.astro";
+import PackageTable from "../components/PackageTable.astro";
+import { listingInfo, loadPackages } from "../lib/listing";
+
+const packages = await loadPackages();
+const { name, description, author, infoLink, bannerUrl, url } = listingInfo;
+const infoLinkText = infoLink?.text || "Learn More";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{name}</title>
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+
+  <body data-listing-url={url}>
+    <div class="col align-items-center content">
+      <div class="col mb-4 w-100 align-items-center">
+        {bannerUrl && <div class="bannerImage" style={`background-image: url(${bannerUrl})`} />}
+        <h1>{name}</h1>
+        {description && <div class="caption1 mb-2">{description}</div>}
+        <div class="caption1 mb-2" data-tooltip={author.email}>
+          Published by <a href={author.url} target="_blank">{author.name}</a>
+        </div>
+      </div>
+
+      <div class="mt-4 row align-items-center">
+        <CopyField value={url} />
+        <Button appearance="accent" class="ms-2 addToVccButton">Add to ALCOM</Button>
+        <Button appearance="stealth" class="ms-2 listingHelpButton" aria-label="Help" data-tooltip="How to add a listing to your VCC">
+          <Icon name="help" />
+        </Button>
+      </div>
+
+      <Dialog id="addListingToVccHelp">
+        <div slot="header" class="row align-items-center">
+          <Icon name="help" class="me-2" />
+          <h3 class="m-0">How to add this listing to your VCC</h3>
+        </div>
+        <p class="mb-1">To add this listing to your VCC (VRChat Creator Companion), do the following</p>
+        <ul class="mt-1 ps-5">
+          <li class="mb-2">Don't.</li>
+          <li class="mb-2">
+            Go download <a href="https://vrc-get.anatawa12.com/en/alcom/" target="_blank">ALCOM</a> instead (its so good)
+          </li>
+          <li class="mb-2">Click "Resources" then "Add Repository"</li>
+          <li class="mb-2">In the field that appears - paste the url displayed below</li>
+
+          <br>
+          <h5 class="m-0 mb-2">Listing URL</h5>
+          <div class="row align-items-center">
+            <CopyField value={url} />
+          </div>
+          <br>
+
+          <li class="mb-2">Click "Add Repository"</li>
+          <li class="mb-2">Check the repository info and click "Add Repository"</li>
+          <li class="mb-2">Go to any of your projects to see the packages from this listing.</li>
+          Or simply click the "Add to ALCOM" button! 
+        </ul>
+        
+        You might need to register the handler first, but then you can use it on any VCC Repo!
+
+        <div class="handlerBannerImage" style={`background-image: url("where-handler.png")`} />
+        <div class="caption1 mt-4">
+          You can read more about Package Listings <a href="https://vcc.docs.vrchat.com" target="_blank">on the VCC docs</a>
+        </div>
+      </Dialog>
+
+      <Dialog id="packageInfoModal">
+        <div slot="header" class="col">
+          <h3 class="m-0 mb-1" id="packageInfoName"></h3>
+          <div class="row">
+            <div class="caption1" id="packageInfoId"></div>
+            <div class="caption1 ms-2" id="packageInfoVersion"></div>
+          </div>
+        </div>
+        <h5 class="m-0">Package Info</h5>
+        <p class="mb-4 mt-1" id="packageInfoDescription"></p>
+        <h5 class="m-0">Author</h5>
+        <p class="mb-4 mt-1">
+          <a target="_blank" id="packageInfoAuthor"></a>
+        </p>
+        <h5 class="m-0 mb-2">Dependencies</h5>
+        <ul class="mt-1 ps-5" id="packageInfoDependencies"></ul>
+        <div class="col">
+          <h5 class="m-0 mb-2">Keywords</h5>
+          <div class="mb-2 mt-1 row" id="packageInfoKeywords"></div>
+        </div>
+        <div class="col">
+          <h5 class="m-0">License</h5>
+          <a class="mb-4 mt-1" id="packageInfoLicense"></a>
+        </div>
+        <h5 class="m-0 mb-2">Listing URL</h5>
+        <div class="row align-items-center">
+          <CopyField value={url} />
+          <Button class="ms-2 listingHelpButton" aria-label="Help" data-tooltip="How to add a listing to your VCC">
+            <Icon name="help" />
+          </Button>
+        </div>
+        <div class="caption1 mt-4">
+          You can read more about Package Listings <a href="https://vcc.docs.vrchat.com" target="_blank">on the VCC docs</a>
+        </div>
+      </Dialog>
+
+      <div class="searchBlock">
+        <input id="searchInput" class="textField" type="search" placeholder="Search packages..." autofocus />
+      </div>
+
+      <div id="rowMoreMenu" popover>
+        <a id="rowMoreMenuDownload" target="_blank">
+          <Icon name="download" />
+          Download .ZIP
+        </a>
+      </div>
+
+      <PackageTable packages={packages} />
+
+      {
+        infoLink?.url && (
+          <div class="caption1">
+            <a href={infoLink.url} target="_blank">{infoLinkText}</a>
+          </div>
+        )
+      }
+    </div>
+
+    <script is:inline type="application/json" id="packageData" set:html={JSON.stringify(packages).replaceAll("<", "\\u003c")} />
+    <script src="../scripts/app.ts"></script>
+  </body>
+</html>
+
+<style>
+  .handlerBannerImage {
+    aspect-ratio: 5 / 2;
+    border-radius: 6px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-bottom: 1rem;
+  }
+
+  #rowMoreMenu {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    padding: 0.25rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface-raised);
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.25);
+  }
+
+  #rowMoreMenu a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: var(--fg);
+  }
+
+  #rowMoreMenu a:hover {
+    background: var(--fill-hover);
+  }
+</style>

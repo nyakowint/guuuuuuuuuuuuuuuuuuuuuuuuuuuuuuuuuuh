@@ -1,0 +1,14 @@
+---
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+  value: string;
+}
+---
+
+<input class="textField vccUrlField" readonly value={Astro.props.value} />
+<Button class="ms-2 copyButton">
+  <Icon name="copy" />
+  Copy
+</Button>

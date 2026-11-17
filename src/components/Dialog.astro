@@ -1,0 +1,39 @@
+---
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+  id: string;
+}
+---
+
+<dialog id={Astro.props.id} closedby="any">
+  <div class="col ps-4 pe-4 pb-4">
+    <div class="row align-items-center justify-content-between mt-3 mb-4">
+      <slot name="header" />
+      <form method="dialog">
+        <Button type="submit" appearance="stealth" aria-label="Close">
+          <Icon name="close" />
+        </Button>
+      </form>
+    </div>
+    <slot />
+  </div>
+</dialog>
+
+<style>
+  dialog {
+    width: min(640px, calc(100vw - 2rem));
+    max-height: 90vh;
+    padding: 0;
+    color: var(--fg);
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgb(0 0 0 / 0.3);
+  }
+
+  dialog::backdrop {
+    background: rgb(0 0 0 / 0.4);
+  }
+</style>
