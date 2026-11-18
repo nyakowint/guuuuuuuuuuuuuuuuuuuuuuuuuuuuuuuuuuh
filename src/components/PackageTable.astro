@@ -4,98 +4,111 @@ import Button from "./Button.astro";
 import Icon from "./Icon.astro";
 
 interface Props {
-  packages: PackageInfo[];
+    packages: PackageInfo[];
 }
 ---
 
 <div class="packages">
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th class="typeCol">Type</th>
-        <th class="actionsCol"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {
-        Astro.props.packages.map((pkg) => (
-          <tr data-package-name={pkg.displayName} data-package-id={pkg.name}>
-            <td>
-              <div class="packageName">{pkg.displayName}</div>
-              <div class="caption1">{pkg.description}</div>
-              <div class="caption2">{pkg.name}</div>
-            </td>
-            <td>{pkg.type}</td>
-            <td>
-              <div class="row align-items-center justify-content-end">
-                <Button appearance="accent" class="addToVccButton">Add to ALCOM/VCC</Button>
-                <Button class="rowPackageInfoButton ms-2" aria-label="Package Info" data-tooltip="Package Info" data-package-id={pkg.name}>
-                  <Icon name="info" />
-                </Button>
-                <Button appearance="stealth" class="rowMenuButton ms-2" aria-label="More" data-package-url={pkg.url}>
-                  <Icon name="more" />
-                </Button>
-              </div>
-            </td>
-          </tr>
-        ))
-      }
-    </tbody>
-  </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th class="typeCol">Type</th>
+                <th class="actionsCol"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {Astro.props.packages.map((pkg) => (
+                <tr
+                    data-package-name={pkg.displayName}
+                    data-package-id={pkg.name}
+                >
+                    <td>
+                        <div class="packageName">{pkg.displayName}</div>
+                        <div class="caption1">{pkg.description}</div>
+                        <div class="caption2">{pkg.name}</div>
+                    </td>
+                    <td>{pkg.type}</td>
+                    <td>
+                        <div class="row align-items-center justify-content-end">
+                            <Button appearance="accent" class="addToVccButton">
+                                Add to ALCOM
+                            </Button>
+                            <Button
+                                class="rowPackageInfoButton ms-2"
+                                aria-label="Package Info"
+                                data-tooltip="Package Info"
+                                data-package-id={pkg.name}
+                            >
+                                <Icon name="info" />
+                            </Button>
+                            <Button
+                                appearance="stealth"
+                                class="rowMenuButton ms-2"
+                                aria-label="More"
+                                data-package-url={pkg.url}
+                            >
+                                <Icon name="more" />
+                            </Button>
+                        </div>
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
 </div>
 
 <style>
-  .packages {
-    width: 100%;
-    max-width: 90%;
-    max-height: 40rem;
-    margin: 0.5rem 0 1rem 0;
-    overflow-y: auto;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-  }
+    .packages {
+        width: 100%;
+        max-width: 90%;
+        max-height: 40rem;
+        margin: 0.5rem 0 1rem 0;
+        overflow-y: auto;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+    }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-  th,
-  td {
-    padding: 0.5rem 0.75rem;
-    text-align: left;
-  }
+    th,
+    td {
+        padding: 0.5rem 0.75rem;
+        text-align: left;
+    }
 
-  th {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    font-size: 0.875rem;
-    font-weight: 600;
-    background: var(--surface);
-  }
+    th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        font-size: 0.875rem;
+        font-weight: 600;
+        background: var(--surface);
+    }
 
-  tbody tr {
-    border-top: 1px solid var(--border);
-  }
+    tbody tr {
+        border-top: 1px solid var(--border);
+    }
 
-  tbody tr:hover {
-    background: var(--fill);
-  }
+    tbody tr:hover {
+        background: var(--fill);
+    }
 
-  .typeCol {
-    width: 100px;
-  }
+    .typeCol {
+        width: 100px;
+    }
 
-  .actionsCol {
-    width: 220px;
-  }
+    .actionsCol {
+        width: 220px;
+    }
 
-  .packageName {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0.25rem 0;
-  }
+    .packageName {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0.25rem 0;
+    }
 </style>
