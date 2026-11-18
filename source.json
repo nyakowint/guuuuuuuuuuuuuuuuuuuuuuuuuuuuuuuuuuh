@@ -13,8 +13,8 @@
   },
   "bannerUrl": "banner.png",
   "githubRepos": [
-    "nyakowint/search-inline-blendshapes",
-    "nyakowint/mesh-stats"
+    "nyakowint/blendshape-searcher-inline",
+    "nyakowint/skinnedmesh-inspector"
   ],
   "packages": []
 }
